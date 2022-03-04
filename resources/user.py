@@ -9,9 +9,9 @@ from blacklist import BLACKLIST
 attributes = reqparse.RequestParser()
 
 attributes.add_argument('id',type=str,required=True, help='The field login cannot be empty.')
-attributes.add_argument('name',type=str,required=True, help='The field login cannot be empty.')
-attributes.add_argument('email',type=str,required=True, help='The field login cannot be empty.')
-attributes.add_argument('password',type=str,required=True, help='The field login cannot be empty.')
+attributes.add_argument('name',type=str,required=True, help='The field name cannot be empty.')
+attributes.add_argument('email',type=str,required=True, help='The field email cannot be empty.')
+attributes.add_argument('password',type=str,required=True, help='The field password cannot be empty.')
 
 
 class UserRegister(Resource):
@@ -34,8 +34,8 @@ class UserLogin(Resource):
     @classmethod
     def post(cls):
         credentials = reqparse.RequestParser()
-        credentials.add_argument('id',type=str,required=True, help='The field login cannot be empty.')
-        credentials.add_argument('password',type=str,required=True, help='The field login cannot be empty.')
+        credentials.add_argument('id',type=str,required=True, help='The field id cannot be empty.')
+        credentials.add_argument('password',type=str,required=True, help='The field password cannot be empty.')
 
         data = credentials.parse_args()
         user = UserModel.find_user(data["id"])

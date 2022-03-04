@@ -6,7 +6,8 @@ from flask_jwt_extended import JWTManager
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
-from resources.user import (UserRegister, UserLogin, UserLogout,UserMensage)
+from resources.user import (UserRegister, UserLogin, UserLogout,)
+from resources.airport import Airport, AirportOrigin, AirportDestiny
 
 
 app = Flask(__name__)
@@ -41,6 +42,8 @@ def access_token_invalid(jwt_header, jwt_payload):
 api.add_resource(UserRegister,'/register')
 api.add_resource(UserLogin,'/login')
 api.add_resource(UserLogout,'/logout')
+api.add_resource(AirportOrigin,'/airport/origin/<prefix_airport>')
+api.add_resource(AirportDestiny,'/airport/destiny/<prefix_airport>')
 
 if __name__ == '__main__':
     app.run(debug=True)
