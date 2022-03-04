@@ -1,4 +1,5 @@
 from sql_alchemy import db
+import hashlib
 
 
 class UserModel(db.Model):
@@ -14,6 +15,12 @@ class UserModel(db.Model):
         self.email = email
         self.password = password
         
+    @classmethod
+    def find_user(cls,id):
+        user = cls.query.filter_by(id = id).first()
+        if user:
+            return user
+        return None
     
     def json(self):
         return {
@@ -27,9 +34,7 @@ class UserModel(db.Model):
         db.session.commit()
     
     @classmethod
-    def find_user(cls,id):
-        user = cls.query.filter_by(id = id).first()
-        if user:
-            return user
-        return None
+    def encrypter(cls,password):
         
+        hash = hashlib.sha512(str(password).encode('utf-8')).hexdigest()
+        return hash
