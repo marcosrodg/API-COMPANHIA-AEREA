@@ -48,12 +48,15 @@ class AirportOriginModel(db.Model,Tools):
     name = db.Column(db.String(80), nullable=False)
     city = db.Column(db.String(80), nullable=False)
     state = db.Column(db.String(2), nullable=False)
+    zone = db.Column(db.Integer(2), nullable=False)
+
     
-    def __init__(self, prefix,name,city,state ):
+    def __init__(self, prefix, name, city, state, zone=0):
         self.prefix = prefix
         self.name = name
         self.city = city
         self.state = state
+        self.zone = zone
         
 
 class AirportDestinyModel(db.Model,Tools):
@@ -63,10 +66,12 @@ class AirportDestinyModel(db.Model,Tools):
     name = db.Column(db.String(80), nullable=False)
     city = db.Column(db.String(80), nullable=False)
     state = db.Column(db.String(2), nullable=False)
+    zone = db.Column(db.Integer(2), nullable=False)
+
     
-    def __init__(self,prefix, name,city,state):
+    def __init__(self, prefix, name, city, state, zone=0):
         self.prefix = prefix
         self.name = name
         self.city = city
         self.state = state
-        
+        self.zone = zone

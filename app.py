@@ -44,6 +44,7 @@ api.add_resource(UserLogin,'/login')
 api.add_resource(UserLogout,'/logout')
 api.add_resource(AirportOrigin,'/airport/origin/<prefix_airport>')
 api.add_resource(AirportDestiny,'/airport/destiny/<prefix_airport>')
+api.add_resource(Airport,'/airport')
 
 if __name__ == '__main__':
     app.run(debug=True)

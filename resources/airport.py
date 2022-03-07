@@ -13,7 +13,7 @@ attributes.add_argument('state',type=str,required=True, help='The field state ca
 class Airport(Resource):
     
     def get(self):
-        pass
+        return {"airports":[air.json() for air in AirportsAll.query.all()]}
 
 
 class AirportOrigin(Resource):
@@ -27,8 +27,8 @@ class AirportOrigin(Resource):
             generals = AirportsAll.find_airport(prefix_airport)
             if not generals:
                 air = AirportsAll(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
-            try:
                 air.save()
+            try:
                 airport.save()
                 return {"mensage": airport.json()}
             except Exception as e:
@@ -58,8 +58,8 @@ class AirportDestiny(Resource):
             generals = AirportsAll.find_airport(prefix_airport)
             if not generals:
                 air = AirportsAll(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
-            try:
                 air.save()
+            try:
                 airport.save()
                 return {"mensage": airport.json()}
             except Exception as e:
