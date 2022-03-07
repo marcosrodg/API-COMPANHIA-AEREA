@@ -1,4 +1,4 @@
-from models.airport import AirportOriginModel, AirportDestinyModel
+from models.airport import AirportOriginModel, AirportDestinyModel, AirportsAll
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import  jwt_required
 
@@ -24,7 +24,11 @@ class AirportOrigin(Resource):
         origin = AirportOriginModel.find_airport(prefix_airport)
         if not origin:
             airport = AirportOriginModel(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
+            generals = AirportsAll.find_airport(prefix_airport)
+            if not generals:
+                air = AirportsAll(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
             try:
+                air.save()
                 airport.save()
                 return {"mensage": airport.json()}
             except Exception as e:
@@ -51,7 +55,11 @@ class AirportDestiny(Resource):
         destiny = AirportDestinyModel.find_airport(prefix_airport)
         if not destiny:
             airport = AirportDestinyModel(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
+            generals = AirportsAll.find_airport(prefix_airport)
+            if not generals:
+                air = AirportsAll(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
             try:
+                air.save()
                 airport.save()
                 return {"mensage": airport.json()}
             except Exception as e:
