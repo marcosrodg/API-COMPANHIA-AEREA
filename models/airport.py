@@ -41,14 +41,14 @@ class AirportsAll(db.Model,Tools):
         self.state = state
 
 
-class AirportOriginModel(db.Model,Tools):
-    __tablename__ = 'airport_origin'
+class AirportFromModel(db.Model,Tools):
+    __tablename__ = 'airport_from'
     
     prefix = db.Column(db.String(3), primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     city = db.Column(db.String(80), nullable=False)
     state = db.Column(db.String(2), nullable=False)
-    zone = db.Column(db.Integer(2), nullable=False)
+    zone = db.Column(db.Integer, nullable=False)
 
     
     def __init__(self, prefix, name, city, state, zone=0):
@@ -59,14 +59,14 @@ class AirportOriginModel(db.Model,Tools):
         self.zone = zone
         
 
-class AirportDestinyModel(db.Model,Tools):
-    __tablename__ = 'airport_destiny'
+class AirportDestinationModel(db.Model,Tools):
+    __tablename__ = 'airport_destination'
     
     prefix = db.Column(db.String(3), primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     city = db.Column(db.String(80), nullable=False)
     state = db.Column(db.String(2), nullable=False)
-    zone = db.Column(db.Integer(2), nullable=False)
+    zone = db.Column(db.Integer, nullable=False)
 
     
     def __init__(self, prefix, name, city, state, zone=0):

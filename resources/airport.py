@@ -1,4 +1,4 @@
-from models.airport import AirportOriginModel, AirportDestinyModel, AirportsAll
+from models.airport import AirportFromModel, AirportDestinationModel, AirportsAll
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import  jwt_required
 
@@ -8,73 +8,102 @@ attributes = reqparse.RequestParser()
 attributes.add_argument('name',type=str,required=True, help='The field name cannot be empty.')
 attributes.add_argument('city',type=str,required=True, help='The field city cannot be empty.')
 attributes.add_argument('state',type=str,required=True, help='The field state cannot be empty.')
+attributes.add_argument('zone',type=str,required=True, help='The field state cannot be empty.')
+
 
 
 class Airport(Resource):
-    
+    # .../aeroports
     def get(self):
-        return {"airports":[air.json() for air in AirportsAll.query.all()]}
+        # retorna todos os aeroportos que a companhia aerea atende
+        return {"airports":[air.json() for air in AirportsAll.query.all()]}, 200 #OK
 
 
-class AirportOrigin(Resource):
-    
+class AirportFrom(Resource):
+    # .../aeroport/from/<prefix_airport>
     @jwt_required()
-    def post(self,prefix_airport):
+    def post(self,prefix_airport): # Insere um novo aeroporto, recebe um parametro da URL pra isso
+        # Instancia os argumentos passados pelo body
         data = attributes.parse_args()
-        origin = AirportOriginModel.find_airport(prefix_airport)
-        if not origin:
-            airport = AirportOriginModel(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
-            generals = AirportsAll.find_airport(prefix_airport)
-            if not generals:
+        # Verifica se o aeroporto ja esta cadastrado na base de dados
+        air_from = AirportFromModel.find_airport(prefix_airport)
+        if not air_from:
+            # sera instanciado um novo aeroporto, com os dados informados
+            airport = AirportFromModel(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower(), data['zone'])
+            generals = AirportsAll.find_airport(prefix_airport)# verifico se a tabela aeroporto gerais, ja tem o aeroporto
+            if not generals: # Se encontrar na tabela geral, insiro nela esse novo registro
                 air = AirportsAll(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
                 air.save()
             try:
-                airport.save()
-                return {"mensage": airport.json()}
+                airport.save()# tento inserir o registro na tabela aeroporto_from
+                return {"mensage": airport.json()}, 201 #Created
             except Exception as e:
                 return {"mensage":"Fail to save Airport"}, 500 # Innternal Server Error
         return {"mensage":f"Airport prefix {prefix_airport} already exists"}, 400 # Bad Request
     
     @jwt_required()
     def delete(self,prefix_airport):
-        
-        origin = AirportOriginModel.find_airport(prefix_airport)
-        if origin:
+        # busca pelo aeroporto de prefixo informado
+        air_from = AirportFromModel.find_airport(prefix_airport)
+        if air_from:
             try:
-                origin.delete()
-                return {"mensage":"Airport origin deleted successfully"}, 200 #ok
+                air_from.delete() # chamado o metodo de delecao da classe
+                return {"mensage":"Airport deleted successfully"}, 200 #ok
             except Exception as e:
                 return {"mensage":"Fail to delete airport"}, 500 #Internal server error  
         return {"mensage":"Airport not found"}, 400 # Bad Request
 
-class AirportDestiny(Resource):
-    
+class AirportDestination(Resource):
+     # .../airport/destination/<prefix_airport>
+
     @jwt_required()
-    def post(self,prefix_airport):
+    def post(self,prefix_airport): # Insere um novo aeroporto, recebe um parametro da URL pra isso
+        # Instancia os argumentos passados pelo body
         data = attributes.parse_args()
-        destiny = AirportDestinyModel.find_airport(prefix_airport)
-        if not destiny:
-            airport = AirportDestinyModel(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
-            generals = AirportsAll.find_airport(prefix_airport)
-            if not generals:
+        # Verifica se o aeroporto ja esta cadastrado na base de dados
+        destination = AirportDestinationModel.find_airport(prefix_airport)
+        # caso nao estiver cadastrado nenhum aeroporto com o prefixo informado
+        if not destination:
+            # sera instanciado um novo aeroporto, com os dados informados
+            airport = AirportDestinationModel(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower(),data['zone'])
+            generals = AirportsAll.find_airport(prefix_airport) # verifico se a tabela aeroporto gerais, ja tem o aeroporto
+            if not generals: # Se encontrar na tabela geral, insiro nela esse novo registro
                 air = AirportsAll(prefix_airport.lower(),data["name"].lower(),data["city"].lower(), data["state"].lower())
                 air.save()
-            try:
+            try:# tento inserir o registro na tabela aeroporto_destination
                 airport.save()
-                return {"mensage": airport.json()}
+                return {"mensage": airport.json()}, 201 # Created
             except Exception as e:
                 return {"mensage":"Fail to save Airport"}, 500 # Innternal Server Error
         return {"mensage":f"Airport prefix {prefix_airport} already exists"}, 400 # Bad Request
     
     @jwt_required()
     def delete(self,prefix_airport):
-        
-        origin = AirportDestinyModel.find_airport(prefix_airport)
-        if origin:
+        # busca pelo aeroporto de prefixo informado
+        air_from = AirportDestinationModel.find_airport(prefix_airport) 
+        # Caso exista
+        if air_from:
             try:
-                origin.delete()
-                return {"mensage":"Airport origin deleted successfully"}, 200 #ok
+                # Tenta fazer sua delecao, chamando um metodo da classe
+                air_from.delete()
+                return {"mensage":"Airport From deleted successfully"}, 200 #ok
             except Exception as e:
                 return {"mensage":"Fail to delete airport"}, 500 #Internal server error  
         return {"mensage":"Airport not found"}, 400 # Bad Request
-    
+
+class Destination(Resource):
+    # .../aeroports/<prefix_from>
+    def get (self, prefix_from):
+        air_from = AirportFromModel.find_airport(prefix_from) # Procura na tabela de origem pelo aeroporto informado
+        # se o aeroporto for encontrado
+        if air_from: 
+            # se o valor da zona for 0, ele viaja para todos os aeroportos
+            if air_from.zone == 0:
+                # listo todos aeroportos da tabela de destinos
+                return {"destinations":[ air.json() for air in AirportDestinationModel.query.all()] }, 200 #OK
+            # Mas se a zona nao for zero, busco todos de zonas iguais ao informado
+            alls = AirportDestinationModel.query.filter_by(zone=air_from.zone).all()
+            # retorno todos os aeroportos de mesma zona
+            return {"destinations":[air.json() for air in alls]}, 200 #Ok
+        # O aeroporto informado nao é nenhum de origem
+        return {"mensage":"Airport not found"}, 400 #Bad request
