@@ -11,6 +11,8 @@ from resources.airport import Airport, AirportFrom, AirportDestination, Destinat
 
 
 app = Flask(__name__)
+
+# configuracoes de ambiente
 load_dotenv()
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
@@ -25,20 +27,22 @@ db.init_app(app)
 jwt = JWTManager(app)
 
 
-
+# cria o banco antes da primeira requisicao
 @app.before_first_request
 def create_database():
     db.create_all()
 
+# verifica se o token do usuario atual esta na BLACKLIST
 @jwt.token_in_blocklist_loader
 def verify_blocklist(self, token):
     return token['jti'] in BLACKLIST
 
+# Revoga o token, e nao permite aquele usuario com o token atual
 @jwt.revoked_token_loader
 def access_token_invalid(jwt_header, jwt_payload):
     return {"mensage":"You have been logged out"}, 401 #unauthorized
     
-
+# Adicionando rotas
 api.add_resource(UserRegister,'/register')
 api.add_resource(UserLogin,'/login')
 api.add_resource(UserLogout,'/logout')

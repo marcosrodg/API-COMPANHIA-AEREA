@@ -15,24 +15,32 @@ attributes.add_argument('password',type=str,required=True, help='The field passw
 
 
 class UserRegister(Resource):
+    # .../register
+    
     def post(self):
+        # Pega os dados do usuario passados no body da requisicao
         data = attributes.parse_args()
+        # Verifica se ja existe esse usuario com essse id
         if UserModel.find_user(data['id']):
             return {"mensage":"User already exist"}, 400 # Bad Request
         
+        # criptografa a senha, antes de inserir no banco de dados
         new_password = UserModel.encrypter(data["password"])
+        # cria o novo usuario
         user = UserModel(data["id"],data["name"],data["email"],new_password)
         try:
-            user.save_user()
+            user.save_user() # tenta salvar o novo usuario
             return user.json(), 201 # Created
         except:
             return {'mensage':'An error occurred while saving user'}, 500 # Innternal Server Error
     
         
 class UserLogin(Resource):
+    # .../login
     
     @classmethod
     def post(cls):
+        # Solicita o id(cpf) e senha do usuario para o login
         credentials = reqparse.RequestParser()
         credentials.add_argument('id',type=str,required=True, help='The field id cannot be empty.')
         credentials.add_argument('password',type=str,required=True, help='The field password cannot be empty.')
@@ -40,6 +48,7 @@ class UserLogin(Resource):
         data = credentials.parse_args()
         user = UserModel.find_user(data["id"])
         
+        # criptografa a senha, antes de comparar com a senha cadastrada
         encrypted = UserModel.encrypter(data["password"])
        
         if user and safe_str_cmp(user.password, encrypted):
@@ -54,11 +63,14 @@ class UserLogin(Resource):
 
 
 class UserLogout(Resource):
+    # .../logout
     
     @jwt_required()
     def post(self):
+        # Pega o token do usuario atual 
         jwt_token = get_jwt()['jti']
         try:
+            # tenta adicionar o token na BLACKLIST
             BLACKLIST.add(jwt_token)
             return {"mensage":"User logged out"}, 200 #ok
         except:

@@ -14,6 +14,7 @@ attributes.add_argument('zone',type=str,required=True, help='The field state can
 
 class Airport(Resource):
     # .../aeroports
+    
     def get(self):
         # retorna todos os aeroportos que a companhia aerea atende
         return {"airports":[air.json() for air in AirportsAll.query.all()]}, 200 #OK
@@ -21,6 +22,7 @@ class Airport(Resource):
 
 class AirportFrom(Resource):
     # .../aeroport/from/<prefix_airport>
+    
     @jwt_required()
     def post(self,prefix_airport): # Insere um novo aeroporto, recebe um parametro da URL pra isso
         # Instancia os argumentos passados pelo body
@@ -79,6 +81,15 @@ class AirportDestination(Resource):
     
     @jwt_required()
     def delete(self,prefix_airport):
+        """ Delecao de aeroportos
+
+        Args:
+            prefix_airport (str): passado na url, como sendo o identificado do 
+            aeroporto a ser excluido
+
+        Returns:
+            Resposta da tentativa de delecao
+        """
         # busca pelo aeroporto de prefixo informado
         air_from = AirportDestinationModel.find_airport(prefix_airport) 
         # Caso exista
@@ -93,7 +104,17 @@ class AirportDestination(Resource):
 
 class Destination(Resource):
     # .../aeroports/<prefix_from>
+    
     def get (self, prefix_from):
+        """Busca por aeropostos de destino apartir de um aeroporto informado
+
+        Args:
+            prefix_from (str): prefixo do aeroporto de origem 
+
+        Returns:
+            list: Retorna uma lista com todos os aeroportos no qual o aeroporto informado
+            pode fazer voo
+        """
         air_from = AirportFromModel.find_airport(prefix_from) # Procura na tabela de origem pelo aeroporto informado
         # se o aeroporto for encontrado
         if air_from: 
