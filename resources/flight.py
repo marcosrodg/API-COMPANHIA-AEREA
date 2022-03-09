@@ -30,6 +30,12 @@ class Flight(Resource):
         except Exception as e:
             return {"mensage":"Fail to create flight"}, 501 #Internal server error
     
-    # retorna todos os voos
+    # retorna todos os voos apartir de uma data informada como parametro
     def get (self):
-        return {"flights":[ flight.json() for flight in FlightModel.query.all()]}
+        #.../flight?date=dd-mm-yyyy
+        
+        path_params = reqparse.RequestParser()
+        path_params.add_argument('date',type=str,required=True, help='The field date cannot be empty.')
+        date = path_params.parse_args()
+         #retorna todos os voos na data informada
+        return {"flights":[ flight.json() for flight in FlightModel.query.filter_by(date=date['date']).all() ] }
