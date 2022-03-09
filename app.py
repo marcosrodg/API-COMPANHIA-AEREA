@@ -8,6 +8,7 @@ import os
 from dotenv import load_dotenv
 from resources.user import (UserRegister, UserLogin, UserLogout,)
 from resources.airport import Airport, AirportFrom, AirportDestination, Destination
+from resources.flight import Flight
 
 
 app = Flask(__name__)
@@ -50,6 +51,7 @@ api.add_resource(AirportFrom,'/airport/from/<prefix_airport>')
 api.add_resource(AirportDestination,'/airport/destination/<prefix_airport>')
 api.add_resource(Airport,'/airports')
 api.add_resource(Destination,'/airports/<prefix_from>')
+api.add_resource(Flight,'/flight')
 
 
 if __name__ == '__main__':

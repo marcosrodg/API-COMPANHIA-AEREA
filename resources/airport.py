@@ -8,8 +8,7 @@ attributes = reqparse.RequestParser()
 attributes.add_argument('name',type=str,required=True, help='The field name cannot be empty.')
 attributes.add_argument('city',type=str,required=True, help='The field city cannot be empty.')
 attributes.add_argument('state',type=str,required=True, help='The field state cannot be empty.')
-attributes.add_argument('zone',type=str,required=True, help='The field state cannot be empty.')
-
+attributes.add_argument('zone',type=str,required=True, help='The field zone cannot be empty.')
 
 
 class Airport(Resource):
