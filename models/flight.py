@@ -30,6 +30,17 @@ class FlightModel(db.Model):
             "price":self.price
         }
     
+    def sale(self,percentage):
+        return {
+            "id": self.id,
+            "from": self.air_from_prefix,
+            "destination":self.air_destination_prefix,
+            "seats":self.seats,
+            "date":self.date,
+            "price":round(self.price - (self.price * (percentage / 100) ),2),
+            "discount": f"{percentage}%"
+        }
+        
     # deleta um voo
     def delete(self):
         db.session.delete(self)
