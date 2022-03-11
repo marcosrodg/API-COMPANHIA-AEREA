@@ -3,8 +3,6 @@ from models.airport import AirportFromModel, AirportDestinationModel
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import  jwt_required
 
-from resources.airport import AirportFrom
-
 attributes = reqparse.RequestParser()
 
 attributes.add_argument('air_from_prefix',type=str,required=True, help='The field air_from_prefix cannot be empty.')
@@ -29,7 +27,7 @@ class Flight(Resource):
         destination_verify = AirportDestinationModel.find_airport(data['air_destination_prefix'])
         
         # se existir 
-        if from_verify and destination_verify:
+        if from_verify and destination_verify and ( from_verify.zone == destination_verify.zone):
             # passa para a tabela os valores dos campos
             flight = FlightModel(data['air_from_prefix'],data['air_destination_prefix'],
                                 data['seats'], data['date'], data['price'])
@@ -38,7 +36,7 @@ class Flight(Resource):
                 return flight.json(), 201 # Created
             except Exception as e:
                 return {"mensage":"Fail to create flight"}, 501 #Internal server error
-        return {"mensage":"Origin or Destination not found "}, 400 # Bad request
+        return {"mensage":"Origin or Destination not found or not in the flight zone "}, 400 # Bad request
     
     # retorna todos os voos apartir de uma data informada como parametro
     def get(self):
@@ -52,6 +50,7 @@ class Flight(Resource):
     
 
 class FlightSale(Resource):
+    #.../flight/sale?tickets=<int>&from=<prefix>&destination=<prefix>
     
     def get(self):
         
@@ -61,24 +60,12 @@ class FlightSale(Resource):
         path_params.add_argument('destination',type=str,required=True, help='The field destination cannot be empty.')
         path_params.add_argument('from',type=str,required=True, help='The field from cannot be empty.')
         data= path_params.parse_args()
+
+        # lista os voos , sem desconto
+        return {"flights":[flight.sale(data["tickets"]) for flight in \
+            FlightModel.query.filter_by(air_from_prefix=data['from']).filter_by(air_destination_prefix=data['destination']).limit(5)]}
         
-        # se a quantidade de tickets for menor que 3 nao recebera desconto
-        if data['tickets'] < 3:
-            # lista os voos , sem desconto
-            return {"flights":[flight.json() for flight in \
-                FlightModel.query.filter_by(air_from_prefix=data['from']).filter_by(air_destination_prefix=data['destination']).limit(5)]}
+
+            
+
         
-        # se ticket for menor que 6 lista de voos com desconto de 10%
-        elif data['tickets'] < 6:
-            return {"flights":[flight.sale(10) for flight  in \
-                FlightModel.query.filter_by(air_from_prefix=data['from']).filter_by(air_destination_prefix=data['destination']).limit(5)]}
-       
-        # se ticket for menor que 11 lista de voo com desconto de 20%
-        elif data['tickets'] < 11:
-            return {"flights":[flight.sale(20) for flight  in \
-                FlightModel.query.filter_by(air_from_prefix=data['from']).filter_by(air_destination_prefix=data['destination']).limit(5)]}
-       
-        # se ticket for maior que 10 lista de voo com d"price")  ]}esconto de 30%
-        else:
-            return {"flights":[flight.sale(30) for flight  in \
-                FlightModel.query.filter_by(air_from_prefix=data['from']).filter_by(air_destination_prefix=data['destination']).limit(5)]}

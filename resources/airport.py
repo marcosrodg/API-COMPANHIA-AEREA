@@ -119,11 +119,12 @@ class Destination(Resource):
         if air_from: 
             # se o valor da zona for 0, ele viaja para todos os aeroportos
             if air_from.zone == 0:
-                # listo todos aeroportos da tabela de destinos
-                return {"destinations":[ air.json() for air in AirportDestinationModel.query.all()] }, 200 #OK
+                # listo todos aeroportos da tabela de destinos, excluindo o aeroporto de origem caso ele tbm for um destino
+                return {"destinations":[ air.json() for air in AirportDestinationModel.query.all() \
+                    if air.prefix != air_from.prefix ] }, 200 #OK
             # Mas se a zona nao for zero, busco todos de zonas iguais ao informado
             alls = AirportDestinationModel.query.filter_by(zone=air_from.zone).all()
-            # retorno todos os aeroportos de mesma zona
-            return {"destinations":[air.json() for air in alls]}, 200 #Ok
+            # retorno todos os aeroportos de mesma zona, excluindo o aeroporto de origem caso ele tbm for um destino
+            return {"destinations":[air.json() for air in alls if air.prefix != air_from.prefix]}, 200 #Ok
         # O aeroporto informado nao é nenhum de origem
         return {"mensage":"Airport not found"}, 400 #Bad request

@@ -1,4 +1,6 @@
 from sql_alchemy import db
+from flask import jsonify
+
 
 
 class FlightModel(db.Model):
@@ -10,6 +12,7 @@ class FlightModel(db.Model):
     seats = db.Column(db.Integer, nullable=False)
     date = db.Column(db.String(10), nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
+    tickets = db.relationship('TicketModel')
     
     
     def __init__(self,air_from_prefix, air_destination_prefix, seats, date, price):
@@ -18,6 +21,13 @@ class FlightModel(db.Model):
         self.seats = seats
         self.date = date
         self.price = price
+    
+    @classmethod
+    def find_flight(cls, id):
+        flight = cls.query.filter_by(id=id).first()
+        if flight:
+            return flight
+        return None
     
     #retorna dados do voo
     def json(self):
@@ -30,17 +40,44 @@ class FlightModel(db.Model):
             "price":self.price
         }
     
-    def sale(self,percentage):
+    # calcula um desconto de acordo com a quantidade de assentos informado
+    def discount(self, seats):
+        if seats < 3:
+            return self.price
+        elif seats < 6:
+            return round(self.price - (self.price * 0.1 ),2)
+        elif seats < 11:
+            return round(self.price - (self.price * 0.2 ),2)
+        else:
+            return round(self.price - (self.price * 0.3 ),2)
+    
+    def sale(self,seats):
         return {
             "id": self.id,
             "from": self.air_from_prefix,
             "destination":self.air_destination_prefix,
             "seats":self.seats,
             "date":self.date,
-            "price":round(self.price - (self.price * (percentage / 100) ),2),
-            "discount": f"{percentage}%"
+            "price": self.discount(seats),
         }
-        
+    
+    def my_tickets(self):
+        return [ticket.json() for ticket in self.tickets]
+    
+    def occupation(self,pos):
+        """Verifica se um determinado assentoja esta ocupado
+
+        Args:
+            pos (int): posicao do assento informado
+
+        Returns:
+            bool: False caso nao possa ver feita a reserva e True caso possa ser feita a reserva
+        """
+        result = [ticket.seat for ticket in self.tickets if ticket.seat == pos]
+        if result:
+            return False
+        return  True
+         
     # deleta um voo
     def delete(self):
         db.session.delete(self)

@@ -8,6 +8,7 @@ class UserModel(db.Model):
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(160), nullable=False)
+    tickets = db.relationship('TicketModel') # lista de objetos tickets
     
     def __init__(self,id,name,email,password):
         self.id = id
@@ -28,6 +29,9 @@ class UserModel(db.Model):
             'name': self.name,
             'email':self.email
             }
+    
+    def my_tickets(self):
+        return {"tickets":[ ticket.json() for ticket in self.tickets]}
     
     def save_user(self):
         db.session.add(self)
