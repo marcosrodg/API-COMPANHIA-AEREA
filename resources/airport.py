@@ -145,4 +145,4 @@ class Destination(Resource):
             # retorno todos os aeroportos de mesma zona, excluindo o aeroporto de origem caso ele tbm for um destino
             return {"destinations":[air.json() for air in alls if air.prefix != air_from.prefix]}, 200 #Ok
         # O aeroporto informado nao é nenhum de origem
-        return {"mensage":"Airport not found"}, 400 #Bad request
+        return {"mensage":"Airport not found"}, 404 #Not found

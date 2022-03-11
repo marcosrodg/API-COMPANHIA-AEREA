@@ -62,11 +62,11 @@ class Ticket(Resource):
             if len(error) > 0: # Se tiver algum ticket na lista de erro , retorno os sucessos e os erros
                 return {"Succesfull": [ticket for ticket in cart],
                         "Fail":f"Seats {error} ocuppied or not found, please choose another seat and try again",
-                        "total": f"R${round(total,2)}"}
+                        "total": f"R${round(total,2)}"}, 207 # Multi-Status
             
             # retorna os tickets comprados com sucesso
             return {"tickets":[ticket for ticket in cart],
-                    "total": f"R${round(total,2)}"}
+                    "total": f"R${round(total,2)}"}, 200 # OK
         
         return {"mensage":"Flight not found"}, 400 #Bad Request
 

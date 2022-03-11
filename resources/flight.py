@@ -58,16 +58,39 @@ class FlightSale(Resource):
         
         # Recebe os parametros pela url
         path_params = reqparse.RequestParser()
-        path_params.add_argument('tickets',type=int,required=True, help='The field tickets cannot be empty.')
-        path_params.add_argument('destination',type=str,required=True, help='The field destination cannot be empty.')
-        path_params.add_argument('from',type=str,required=True, help='The field from cannot be empty.')
+        path_params.add_argument('tickets',type=int,required=True, help='The param  tickets cannot be empty.')
+        path_params.add_argument('destination',type=str,required=True, help='The param  destination cannot be empty.')
+        path_params.add_argument('from',type=str,required=True, help='The param  from cannot be empty.')
         data= path_params.parse_args()
-
-        # lista os voos , sem desconto
-        return {"flights":[flight.sale(data["tickets"]) for flight in \
-            FlightModel.query.filter_by(air_from_prefix=data['from']).filter_by(air_destination_prefix=data['destination']).limit(5)]}
         
+        flights_found =[flight.sale(data["tickets"]) for flight in \
+            FlightModel.query.filter_by(air_from_prefix=data['from']).filter_by(air_destination_prefix=data['destination']).limit(5)]
+        
+        # lista os voos , sem desconto
+        if flights_found:
+            return {"flights": flights_found}, 200 #OK
+        return {"mensage":"No flight found"}, 404 # Not found
 
+class TicketFlight(Resource):
+        #.../flight/tickets
+        
+        @jwt_required()
+        def get(self):
+            
+            # Retorna os tickets reservados de um dado voo
+            path_params = reqparse.RequestParser()
+            path_params.add_argument('id_flight',type=int,required=True, help='The param id_flight cannot be empty.')
+            data= path_params.parse_args()
+            
+            # verifica se existe o voo apartir do id informado
+            flight_verify = FlightModel.find_flight(data['id_flight'])
+             
+            if flight_verify :
+                # caso exista o voo, e exista tickets vendidos, retorna os tickets, senao retorna " no tickets found"
+                return {"tickets":flight_verify.my_tickets()} , 200 #OK
+            
+            # voo nao encontrado
+            return {"mensage":"flight not found"}, 404 # Not found
             
 
         

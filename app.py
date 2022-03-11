@@ -8,7 +8,7 @@ import os
 from dotenv import load_dotenv
 from resources.user import (UserRegister, UserLogin, UserLogout,UserTickets)
 from resources.airport import Airport, AirportFrom, AirportDestination, Destination
-from resources.flight import Flight, FlightSale
+from resources.flight import Flight, FlightSale,TicketFlight
 from resources.tickets import Ticket
 
 
@@ -53,6 +53,7 @@ api.add_resource(AirportDestination,'/airport/destination/<prefix_airport>')
 api.add_resource(Airport,'/airports')
 api.add_resource(Destination,'/airports/<prefix_from>')
 api.add_resource(Flight,'/flight')
+api.add_resource(TicketFlight,'/flight/tickets')
 api.add_resource(FlightSale,'/flight/sale')
 api.add_resource(Ticket,'/tickets')
 api.add_resource(UserTickets,'/user/tickets')
