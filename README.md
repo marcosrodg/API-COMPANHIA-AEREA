@@ -2,7 +2,7 @@
 RestAPI criada em flask para venda de passagens aereas por uma companhia <br />
 
 
-* ## Preparando o Ambiente para Executando a Api
+* ## Preparando o Ambiente para a Execucao da Api
 
 
 Clone ou faça o Download do repositorio em uma pasta em sua maquina
@@ -95,8 +95,9 @@ Instale o Postman  em <www.postman.com/downloads/> .Após isso crie um 'workspac
   
   
 * ``URL:5000/user/tickets``
+ 
   
-
+* ``URL:5000/flight/tickets``
 
 Agora basta seguir as '**Instruções de Uso**' para fazer as requisições.
 
