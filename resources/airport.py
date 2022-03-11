@@ -15,7 +15,24 @@ class Airport(Resource):
     # .../aeroports
     
     def get(self):
-        # retorna todos os aeroportos que a companhia aerea atende
+        # retorna todos os aeroportos que a companhia aerea atende,
+        # seja ele uma origem ou destino
+        
+        # busca o prefixo de todos aeropostos na tabela
+        airports = [air.prefix for air in AirportsAll.query.all()]
+        
+        for air in airports:
+            # procura nas tabelas de origem e destino se o aeroporto em questao
+            # ainda é uma rota 
+            resp_from = AirportFromModel.find_airport(air)
+            resp_dest = AirportDestinationModel.find_airport(air)
+            if not (resp_from or resp_dest):
+                # caso o aeroporto n seja mais uma rota de origem ou destinos
+                # ele é deletado
+                resp_all = AirportsAll.find_airport(air)
+                resp_all.delete()
+        
+        # retorno os bancos restante na tabela     
         return {"airports":[air.json() for air in AirportsAll.query.all()]}, 200 #OK
 
 
@@ -90,14 +107,15 @@ class AirportDestination(Resource):
             Resposta da tentativa de delecao
         """
         # busca pelo aeroporto de prefixo informado
-        air_from = AirportDestinationModel.find_airport(prefix_airport) 
+        air_dest= AirportDestinationModel.find_airport(prefix_airport) 
         # Caso exista
-        if air_from:
+        if  air_dest:
             try:
                 # Tenta fazer sua delecao, chamando um metodo da classe
-                air_from.delete()
-                return {"mensage":"Airport From deleted successfully"}, 200 #ok
+                air_dest.delete()
+                return {"mensage":"Airport destination deleted successfully"}, 200 #ok
             except Exception as e:
+                print(e)
                 return {"mensage":"Fail to delete airport"}, 500 #Internal server error  
         return {"mensage":"Airport not found"}, 400 # Bad Request
 

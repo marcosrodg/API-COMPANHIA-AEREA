@@ -38,6 +38,8 @@ class Flight(Resource):
                 return {"mensage":"Fail to create flight"}, 501 #Internal server error
         return {"mensage":"Origin or Destination not found or not in the flight zone "}, 400 # Bad request
     
+    
+    
     # retorna todos os voos apartir de uma data informada como parametro
     def get(self):
         #.../flight?date=dd-mm-yyyy

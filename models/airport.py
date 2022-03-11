@@ -25,8 +25,13 @@ class Tools():
         }
     
     def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+        try:
+            [ flight.delete() for flight in self.flights ]
+        except Exception as e:
+            pass
+        finally:
+            db.session.delete(self)
+            db.session.commit()
     
     def save(self):
         db.session.add(self)

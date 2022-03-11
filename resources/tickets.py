@@ -1,4 +1,4 @@
-from copy import error
+
 from models.tickets import TicketModel
 from models.flight import FlightModel
 from flask_restful import Resource, reqparse

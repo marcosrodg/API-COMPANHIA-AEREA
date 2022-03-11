@@ -6,7 +6,7 @@ from flask_jwt_extended import JWTManager
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
-from resources.user import (UserRegister, UserLogin, UserLogout,)
+from resources.user import (UserRegister, UserLogin, UserLogout,UserTickets)
 from resources.airport import Airport, AirportFrom, AirportDestination, Destination
 from resources.flight import Flight, FlightSale
 from resources.tickets import Ticket
@@ -55,8 +55,7 @@ api.add_resource(Destination,'/airports/<prefix_from>')
 api.add_resource(Flight,'/flight')
 api.add_resource(FlightSale,'/flight/sale')
 api.add_resource(Ticket,'/tickets')
-
-
+api.add_resource(UserTickets,'/user/tickets')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -75,3 +75,13 @@ class UserLogout(Resource):
             return {"mensage":"User logged out"}, 200 #ok
         except:
             return {"mensage":"Failed to logout"}, 500 #Innternal Server Error
+
+class UserTickets(Resource):
+    
+    @jwt_required()
+    def get(self):
+
+        id = get_jwt()['sub']
+        
+        user = UserModel.find_user(id["id"])
+        return user.my_tickets()
