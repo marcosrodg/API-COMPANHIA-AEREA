@@ -1,4 +1,4 @@
-# API-COMPANHIA-AEREA
+ # :airplane: API-COMPANHIA-AEREA :airplane: <br />
 RestAPI criada em flask para venda de passagens aereas por uma companhia <br />
 
 
@@ -293,7 +293,7 @@ Exemplo de Requisição logout com um usuário.
 
 |**Header**         |                            |
 |-------------------|----------------------------|
-|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw        | 
+|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw  ```       | 
 
 ***Resposta***
 Como resposta, obtém-se uma mensagem que o usuario foi deslogado, ou tocken expirado ou token invalido
@@ -310,32 +310,38 @@ Como resposta, obtém-se uma mensagem que o usuario foi deslogado, ou tocken exp
 ***Requisição***
 
 
-Exemplo da URL para Adicionar um Aeroporto de origem.
+Exemplo da URL para Adicionar & Deletar um Aeroporto de origem.
 
 
-|**Method**   | **URL**                          |
-|-------------|----------------------------------|
-|   POST      |  /airport/from/udi               | 
+|**Method**     | **URL**                          |
+|---------------|----------------------------------|
+|   POST        |  /airport/from/udi               |
+|   DELETE      |  /airport/from/udi               | 
   
 
  **udi** = Prefixo do aeroporto que deseja adicionar, ex: ( confins = CFN, guarulhos = SGBR)
-
+ 
+:no_entry: ATENCAO: Deletando um Aeroporto caso ele tenha voos, os voos serao deletados automaticamente
   
-Exemplo da URL para Adicionar um Aeroporto de destino.
+Exemplo da URL para Adicionar & Deletar um Aeroporto de destino.
 
 
-|**Method**   | **URL**                          |
-|-------------|----------------------------------|
-|   POST      |  /airport/destination/cfn        | 
+|**Method**     | **URL**                          |
+|---------------|----------------------------------|
+|   POST        |  /airport/destination/cfn        |
+|   DELETE      |  /airport/destination/udi               | 
 
  **cfn** = Prefixo do aeroporto que deseja adicionar, ex: ( confins = CFN, guarulhos = SGBR)
+ 
+ :no_entry: ATENCAO: Deletando um Aeroporto caso ele tenha voos, os voos serao deletados automaticamente
   
   
 |**Header**         |                            |
 |-------------------|----------------------------|
-|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw        | 
+|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw ```        | 
   
-  
+
+BODY: Necessario apenas para o metodo POST
   
 |**Request Body**                                                                        |
 |----------------------------------------------------------------------------------------|
@@ -385,7 +391,7 @@ Exemplo da URL para Adicionar um Aeroporto de origem.
 
 |**Header**         |                            |
 |-------------------|----------------------------|
-|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw        | 
+|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw  ```      | 
   
   
 |**Request Body**                                                                        |
@@ -439,7 +445,7 @@ Exemplos de Respostas: pUma lista de voos ou voo nao encontrado
 |  404 NOT FOUND        | ``` {"mensage":"no flights found"}```                                     |
 
 
- ## 6. Listando os aeroportos cadastrados
+ ## 7. Listando os aeroportos cadastrados
 
 
 ***Requisição***
@@ -455,7 +461,7 @@ Exemplo da URL para listar todos  Aeroporto que a companhia aerea trabalha.
 
 |**Header**         |                            |
 |-------------------|----------------------------|
-|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw        | 
+|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw  ```      | 
 
 
 ***Resposta***
@@ -466,7 +472,7 @@ Exemplo da URL para listar todos  Aeroporto que a companhia aerea trabalha.
 |  404 NOT FOUND        | ``` {"mensage":"no aeroports found"}```                                 |
   
  
- ## 7. Listando os aeroportos de destino apartir de um aeroporto de origem informado
+ ## 8. Listando os aeroportos de destino apartir de um aeroporto de origem informado
 
 
 ***Requisição***
@@ -492,7 +498,7 @@ Exemplo da URL para Listar aeroportos de destino apartir de um Aeroporto de orig
   
  
 
- ## 8. Fazendo reserva de um ticket(s) em um determiado
+ ## 9. Fazendo reserva de um ticket(s) em um determiado
 
 ***Requisição***
 
@@ -510,7 +516,7 @@ Exemplo da URL para Adicionar um Aeroporto de origem.
   
 |**Header**         |                            |
 |-------------------|----------------------------|
-|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw        | 
+|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw ```        | 
 
   
 REQUEST BODY: Informamos o ID do voo onde desejamos realizar a reserva. As posicoes de cada assento. E a quantidade de Assentos
@@ -538,7 +544,7 @@ REQUEST BODY: Informamos o ID do voo onde desejamos realizar a reserva. As posic
 
 
   
- ## 9. Listando os tickets reservados pelo usuario Logado
+ ## 10. Listando os tickets reservados pelo usuario Logado
 
 
 ***Requisição***
@@ -554,7 +560,7 @@ Exemplo da URL para os tickets reservados pelo usuario Logado  na sessão atual.
 
 |**Header**         |                            |
 |-------------------|----------------------------|
-|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw        | 
+|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw  ```       | 
 
 
 ***Resposta***
@@ -562,4 +568,33 @@ Exemplo da URL para os tickets reservados pelo usuario Logado  na sessão atual.
 |**Status**                 | **Response Body**                                                       |
 |---------------------------|-------------------------------------------------------------------------|
 |  200 OK                   | ``` lista com tickets encontrados ```                                   |
+|  422 UNPROCESSABLE ENTITY | ``` Tocken informado errado```                                          |
+ 
+ 
+
+  ## 11. Listando os tickets reservados pelo usuario Logado
+
+
+***Requisição***
+
+
+Exemplo da URL para listar os tickets reservados em um determinado voo.
+
+
+|**Method**   | **URL**                            |
+|-------------|------------------------------------|
+|   GET       |  /flight/tickets                   | 
+  
+
+|**Header**         |                            |
+|-------------------|----------------------------|
+|  Authorization    |   ```  Bearer                               eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY0MTMxMzg0MywianRpIjoiNWI0ZTJmZTEtN2U0MC00OWI1LWJiMTMtOTBjMjdjZTA4ZmZmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjcGYiOiIwMDAwMDAwMDAwMCIsImVtYWlsIjoiZG9jdW1lbnRhXHUwMGU3XHUwMGUzb0BlbWFpbC5jb20ifSwibmJmIjoxNjQxMzEzODQzLCJleHAiOjE2NDEzMTc0NDN9.MLokeR2UG8M-QWxKnfhU_mF7mZJ8zvXs74kMrLLK9__wupRra3_E7SWmSsFlpMuKtddG_QyzFOFo0K4TX3Jkvw  ```       | 
+
+
+***Resposta***
+  
+|**Status**                 | **Response Body**                                                       |
+|---------------------------|-------------------------------------------------------------------------|
+|  200 OK                   | ``` lista com tickets encontrados ```                                   |
+|  404 OK                   | ``` o voo nao foi encontrado apartir do id informado```                 |
 |  422 UNPROCESSABLE ENTITY | ``` Tocken informado errado```                                          |
